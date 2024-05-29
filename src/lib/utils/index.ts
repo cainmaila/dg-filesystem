@@ -2,6 +2,11 @@ import Cookies from 'js-cookie'
 import axios from 'axios'
 import { goto } from '$app/navigation'
 import { page } from '$app/stores'
+import { jwtDecode } from 'jwt-decode'
+import { writable } from 'svelte/store'
+
+export const me$ = writable<I_Decoded>()
+
 /**
  * 將授權標題添加到Axios請求
  */
@@ -16,6 +21,8 @@ export function axiosInterceptors() {
 				return request
 		}
 		const accessToken = Cookies.get('accessToken')
+		const decoded = jwtDecode(accessToken || '') as I_Decoded
+		me$.set(decoded)
 		if (!accessToken || accessToken === 'undefined') {
 			goto('/login', { replaceState: true })
 		}
