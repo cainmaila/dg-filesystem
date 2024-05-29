@@ -13,14 +13,16 @@
 	let loading = false
 
 	onMount(() => {
-		accessToken = Cookies.get('accessToken') || ''
+		accessToken = Cookies.get('accessToken') || '' // 取得accessToken
 	})
 
+	// 保存accessToken
 	function handleAccessToken() {
 		accessToken && Cookies.set('accessToken', accessToken)
 		goto('/', { replaceState: true })
 	}
 
+	// 驗證有效性
 	async function getUserMe() {
 		try {
 			loading = true
@@ -38,6 +40,7 @@
 		}
 	}
 
+	// 重置UI
 	function restUi() {
 		userMe = null
 		errorMesssage = ''
