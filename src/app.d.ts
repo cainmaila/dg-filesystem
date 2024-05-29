@@ -42,7 +42,6 @@ declare global {
 			scopes: string[]
 		}[]
 	}
-
 }
 
-export { }
+export {}
