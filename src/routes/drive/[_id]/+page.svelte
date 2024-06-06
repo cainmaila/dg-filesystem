@@ -11,7 +11,7 @@
 {#await getBlobs({ drive: _id })}
 	<div>Loading...</div>
 {:then value}
-	<pre>{JSON.stringify(value, null, 2)}</pre>
+	<pre>{JSON.stringify(value.data, null, 2)}</pre>
 {:catch error}
 	<div>{error.message}</div>
 {/await}
