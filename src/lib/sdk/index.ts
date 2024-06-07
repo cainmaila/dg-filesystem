@@ -41,5 +41,4 @@ export const getBlobs = ({
  * @param data
  * @returns
  */
-export const createFolder = (data: I_CreateFolderParams) =>
-	axios.post('/cms/blobs/folder', data)
+export const createFolder = (data: I_CreateFolderParams) => axios.post('/cms/blobs/folder', data)

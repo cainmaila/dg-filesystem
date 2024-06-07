@@ -44,23 +44,24 @@ declare global {
 	}
 
 	declare interface I_CreateFolderParams {
-		parent: string; name: string
+		parent: string
+		name: string
 	}
 
 	declare interface I_Blob {
-		_id: string;
-		type: number;
-		name: string;
-		drive: string;
-		parent: string;
-		size: number;
-		creator: string;
-		isDelete: boolean;
-		metadata: Record<string, unknown>;
-		shares: string[];
-		createdAt: string;
-		updatedAt: string;
+		_id: string
+		type: number
+		name: string
+		drive: string
+		parent: string
+		size: number
+		creator: string
+		isDelete: boolean
+		metadata: Record<string, unknown>
+		shares: string[]
+		createdAt: string
+		updatedAt: string
 	}
 }
 
-export { }
+export {}
