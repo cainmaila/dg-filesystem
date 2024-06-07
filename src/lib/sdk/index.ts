@@ -11,7 +11,7 @@ export const getBlobs = ({
 	parent,
 	searchName
 }: {
-	drive: string
+	drive?: string
 	parent?: string
 	searchName?: string
 }) =>
@@ -22,3 +22,9 @@ export const getBlobs = ({
 			searchName
 		}
 	})
+
+export const createFolder = (data: {
+	parent: string
+	name: string
+
+}) => axios.post('/cms/blobs/folder', data)

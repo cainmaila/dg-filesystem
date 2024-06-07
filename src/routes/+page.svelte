@@ -25,7 +25,7 @@
 	{#each drives?.drives || [] as drive (drive._id)}
 		<div>
 			<div>
-				<a href={`/drive/${drive._id}`}>{drive.name || drive._id}</a>
+				<a href={`/drive/${drive._id}/${drive.root}`}>{drive.name || drive._id}</a>
 			</div>
 		</div>
 	{/each}
