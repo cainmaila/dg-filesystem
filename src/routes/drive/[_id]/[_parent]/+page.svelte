@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { createFolder, getBlobs, uploadFile } from '$lib/sdk'
-	import type { ChangeEventHandler } from 'svelte/elements'
 
 	export let data
 	const { _id, parent } = data
@@ -69,31 +68,39 @@
 	}
 </script>
 
-<h1>Drive</h1>
-<form on:submit={onCreateBlob}>
-	<fieldset>
-		<input
-			type="radio"
-			id="folder"
-			name="second-language"
-			on:change={changeFileType}
-			checked
-			on:change={changeFileType}
-		/>
-		<label for="folder">資料夾</label>
-		<input type="radio" id="fileType" name="second-language" on:change={changeFileType} />
-		<label for="fileType">檔案</label>
+<h1 class="h1">Drive</h1>
+<form on:submit={onCreateBlob} class="card p-4 grid gap-4">
+	<fieldset class="flex gap-4">
+		<label class="label" for="folder"
+			><input
+				class="radio mr-2"
+				type="radio"
+				id="folder"
+				name="second-language"
+				on:change={changeFileType}
+				checked
+			/>資料夾</label
+		>
+		<label class="label" for="fileType"
+			><input
+				class="radio mr-2"
+				type="radio"
+				id="fileType"
+				name="second-language"
+				on:change={changeFileType}
+			/>檔案</label
+		>
 	</fieldset>
-	<input type="text" name="name" placeholder="Name" />
+	<input class="input" type="text" name="name" placeholder="Name" />
 	{#if fileTyle !== 1}
 		<input type="file" name="file" placeholder="File" />
 	{/if}
-	<button type="submit">POST</button>
+	<button class="btn variant-filled" type="submit">POST</button>
 </form>
 
 <!-- <pre>{JSON.stringify(blobs, null, 2)}</pre> -->
 {#await fetchBlobs()}
-	<div>Loading...</div>
+	<div class="loader"></div>
 {:then}
 	{#each blobs || [] as blob}
 		<div>
