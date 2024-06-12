@@ -64,34 +64,38 @@
 </script>
 
 <section>
-	<h2>服務器位置</h2>
-	<code>{INVENTEC_SERVICE_URL}</code>
+	<h2 class="h2">服務器位置</h2>
+	<code class="code">{INVENTEC_SERVICE_URL}</code>
 </section>
-<section>
+<section class="card p-4">
 	<form on:submit={onLoginSumit}>
-		<div class="grid">
-			<label>
-				<input type="text" name="account" bind:value={account} placeholder="帳號" />
+		<div class="grid grid-cols-3 gap-2">
+			<label class="label">
+				<input class="input" type="text" name="account" bind:value={account} placeholder="帳號" />
 			</label>
-			<label>
-				<input type="text" name="password" bind:value={password} placeholder="密碼" />
+			<label class="label">
+				<input class="input" type="text" name="password" bind:value={password} placeholder="密碼" />
 			</label>
-			<button type="submit">登入</button>
+			<button class="btn variant-filled" type="submit">登入</button>
 		</div>
 	</form>
-	<label>
-		<input type="text" bind:value={accessToken} placeholder="請餵養 accessToken" />
-	</label>
-	<button on:click={handleAccessToken}>Save</button>
 </section>
-<section>
-	<h2>驗證有效性</h2>
-	<button on:click={getUserMe}>取得使用者資訊</button>
+<section class="card p-4 grid gap-2">
+	<label class="label">
+		<input class="input" type="text" bind:value={accessToken} placeholder="請餵養 accessToken" />
+	</label>
+	<button class="btn variant-filled" on:click={handleAccessToken}>Save</button>
+</section>
+<section class="grid gap-2">
+	<h2 class="h2">驗證有效性</h2>
+	<button class="btn variant-filled" on:click={getUserMe}>取得使用者資訊</button>
 	{#if loading}
-		<p>Loading...</p>
+		<div class="w-full text-center">
+			<div class="loader"></div>
+		</div>
 	{:else if errorMesssage}
 		<p>{errorMesssage}</p>
 	{:else if userMe}
-		<pre>{JSON.stringify(userMe, null, 2)}</pre>
+		<pre class="pre">{JSON.stringify(userMe, null, 2)}</pre>
 	{/if}
 </section>

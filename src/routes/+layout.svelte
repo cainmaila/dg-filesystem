@@ -1,9 +1,9 @@
-<script lang="ts">
+<script>
+	import '../app.css'
 	import { onMount } from 'svelte'
 	import { axiosInterceptors } from '$lib/utils'
 
 	let ready = false
-
 	onMount(() => {
 		const interceptor = axiosInterceptors() // 添加Axios攔截器
 		ready = true
@@ -13,9 +13,9 @@
 	})
 </script>
 
-<main class="container">
+<main class="container mx-auto p-8 space-y-8">
 	{#if ready}
-		<slot />
+		<slot></slot>
 	{:else}
 		<div>Loading..</div>
 	{/if}

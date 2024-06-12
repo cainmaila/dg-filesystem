@@ -2,17 +2,20 @@
 	import { goto } from '$app/navigation'
 	import { getDrives } from '$lib/sdk'
 	import { me$ } from '$lib/utils'
+	import { onMount } from 'svelte'
 
 	let drives: I_Drives //自己的Drive List
 
-	startGetDrives()
+	onMount(() => {
+		startGetDrives()
+	})
 	async function startGetDrives() {
 		try {
 			const { data } = await getDrives()
 			drives = data
 		} catch (error) {
 			//@ts-ignore
-			alert(error.message || '發生錯誤')
+			console.error(error.message)
 			goto('/login')
 		}
 	}
