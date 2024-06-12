@@ -50,3 +50,10 @@ export const getBlobs = ({
  * @returns
  */
 export const createFolder = (data: I_CreateFolderParams) => axios.post('/cms/blobs/folder', data)
+
+/**
+ * 上傳檔案
+ * @param data
+ * @returns
+ */
+export const uploadFile = (data: FormData) => axios.post('/cms/blobs/file', data)

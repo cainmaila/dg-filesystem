@@ -1,41 +1,115 @@
 <script lang="ts">
-	import { createFolder, getBlobs } from '$lib/sdk'
+	import { createFolder, getBlobs, uploadFile } from '$lib/sdk'
+	import type { ChangeEventHandler } from 'svelte/elements'
 
 	export let data
 	const { _id, parent } = data
 
+	let loading = false
+	let fileTyle = 1
 	let blobs: I_Blob[] = []
 
 	async function fetchBlobs() {
-		const res = await getBlobs({ drive: _id, parent })
-		blobs = res.data.blobs
+		loading = true
+		try {
+			const res = await getBlobs({ drive: _id, parent })
+			blobs = res.data.blobs
+		} catch (error: any) {
+			alert(error.message)
+		} finally {
+			loading = false
+		}
 	}
 
 	//@ts-ignore
 	async function onCreateBlob(e) {
 		e.preventDefault()
+		loading = true
 		const name = e.target.name.value
-		await createFolder({
-			parent,
-			name
-		})
+		switch (fileTyle) {
+			case 1:
+				try {
+					await createFolder({
+						parent,
+						name
+					})
+				} catch (error: any) {
+					alert(error.message)
+				}
+				break
+			case 2:
+				const data = new FormData()
+				console.log(e.target.file)
+				data.append('file', e.target.file.files[0])
+				data.append('name', name)
+				data.append('parent', parent)
+				try {
+					await uploadFile(data)
+				} catch (error: any) {
+					alert(error.message)
+				}
+				break
+		}
+
+		try {
+			await fetchBlobs()
+		} catch (error: any) {
+			alert(error.message)
+		} finally {
+			loading = false
+		}
+	}
+
+	function gotoPage(parentId: string) {
+		location.href = `/drive/${_id}/${parentId}`
+	}
+
+	function changeFileType(e: any) {
+		fileTyle = (e.target as HTMLInputElement).id === 'folder' ? 1 : 2
 	}
 </script>
 
 <h1>Drive</h1>
-
 <form on:submit={onCreateBlob}>
+	<fieldset>
+		<input
+			type="radio"
+			id="folder"
+			name="second-language"
+			on:change={changeFileType}
+			checked
+			on:change={changeFileType}
+		/>
+		<label for="folder">資料夾</label>
+		<input type="radio" id="fileType" name="second-language" on:change={changeFileType} />
+		<label for="fileType">檔案</label>
+	</fieldset>
 	<input type="text" name="name" placeholder="Name" />
+	{#if fileTyle !== 1}
+		<input type="file" name="file" placeholder="File" />
+	{/if}
 	<button type="submit">POST</button>
 </form>
 
-<pre>{JSON.stringify(blobs, null, 2)}</pre>
+<!-- <pre>{JSON.stringify(blobs, null, 2)}</pre> -->
 {#await fetchBlobs()}
 	<div>Loading...</div>
 {:then}
 	{#each blobs || [] as blob}
 		<div>
-			<a href={`/drive/${_id}/${blob._id}`}>{blob.name}</a>
+			{#if blob.type === 1}
+				<span> 📁 </span>
+				<!-- svelte-ignore a11y-invalid-attribute -->
+				<a
+					href="#"
+					on:click={() => {
+						gotoPage(blob._id)
+					}}>{blob.name}</a
+				>
+			{:else}
+				<span> 📄 </span>
+				<span>{blob.name}</span>
+			{/if}
 		</div>
 	{/each}
 {:catch error}
