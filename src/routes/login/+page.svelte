@@ -76,19 +76,19 @@
 			<label class="label">
 				<input class="input" type="text" name="password" bind:value={password} placeholder="密碼" />
 			</label>
-			<button class="btn variant-filled" type="submit">登入</button>
+			<button class="variant-filled btn" type="submit">登入</button>
 		</div>
 	</form>
 </section>
-<section class="card p-4 grid gap-2">
+<section class="card grid gap-2 p-4">
 	<label class="label">
 		<input class="input" type="text" bind:value={accessToken} placeholder="請餵養 accessToken" />
 	</label>
-	<button class="btn variant-filled" on:click={handleAccessToken}>Save</button>
+	<button class="variant-filled btn" on:click={handleAccessToken}>Save</button>
 </section>
 <section class="grid gap-2">
 	<h2 class="h2">驗證有效性</h2>
-	<button class="btn variant-filled" on:click={getUserMe}>取得使用者資訊</button>
+	<button class="variant-filled btn" on:click={getUserMe}>取得使用者資訊</button>
 	{#if loading}
 		<div class="w-full text-center">
 			<div class="loader"></div>

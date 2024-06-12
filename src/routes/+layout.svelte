@@ -13,7 +13,7 @@
 	})
 </script>
 
-<main class="container mx-auto p-8 space-y-8">
+<main class="container mx-auto space-y-8 p-8">
 	{#if ready}
 		<slot></slot>
 	{:else}
