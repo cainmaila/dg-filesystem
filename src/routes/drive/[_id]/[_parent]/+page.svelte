@@ -69,7 +69,7 @@
 </script>
 
 <h1 class="h1">Drive</h1>
-<form on:submit={onCreateBlob} class="card p-4 grid gap-4">
+<form on:submit={onCreateBlob} class="card grid gap-4 p-4">
 	<fieldset class="flex gap-4">
 		<label class="label" for="folder"
 			><input
@@ -95,7 +95,7 @@
 	{#if fileTyle !== 1}
 		<input type="file" name="file" placeholder="File" />
 	{/if}
-	<button class="btn variant-filled" type="submit">POST</button>
+	<button class="variant-filled btn" type="submit">POST</button>
 </form>
 
 <!-- <pre>{JSON.stringify(blobs, null, 2)}</pre> -->
