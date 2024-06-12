@@ -20,12 +20,3 @@
 		<div>Loading..</div>
 	{/if}
 </main>
-
-<style>
-	:root {
-		--pico-line-height: 1;
-	}
-	:global(button) {
-		/* height: 40px; */
-	}
-</style>

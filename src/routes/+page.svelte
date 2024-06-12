@@ -3,11 +3,12 @@
 	import { getDrives } from '$lib/sdk'
 	import { me$ } from '$lib/utils'
 	import { onMount } from 'svelte'
+	import { Avatar } from '@skeletonlabs/skeleton'
 
 	let drives: I_Drives //自己的Drive List
 
 	onMount(() => {
-		startGetDrives()
+		// startGetDrives()
 	})
 	async function startGetDrives() {
 		try {
@@ -21,15 +22,29 @@
 	}
 </script>
 
-<h1>檔案系統</h1>
-<div>{$me$?.userName}</div>
-<!-- <pre>{JSON.stringify(drives, null, 2)}</pre> -->
-<div>
-	{#each drives?.drives || [] as drive (drive._id)}
-		<div>
-			<div>
-				<a href={`/drive/${drive._id}/${drive.root}`}>{drive.name || drive._id}</a>
-			</div>
-		</div>
-	{/each}
+<div class="flex items-center gap-x-4">
+	<h1 class="h1 flex-none">檔案系統</h1>
+	<Avatar initials={$me$?.userName} background="bg-primary-500" />
 </div>
+<!-- <pre class="pre">{JSON.stringify(drives, null, 2)}</pre> -->
+{#await getDrives()}
+	<div class="loader"></div>
+{:then { data }}
+	<div class="card">
+		<nav class="list-nav">
+			<ul>
+				{#each data.drives || [] as drive (drive._id)}
+					<ui>
+						<a href={`/drive/${drive._id}/${drive.root}`}>💾 {drive.name || drive._id}</a>
+					</ui>
+				{/each}
+			</ul>
+		</nav>
+	</div>
+{:catch error}
+	<aside class="alert variant-ghost">
+		<div class="alert-message">
+			<p>{error.message}</p>
+		</div>
+	</aside>
+{/await}
