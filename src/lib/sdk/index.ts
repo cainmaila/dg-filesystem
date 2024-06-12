@@ -1,6 +1,16 @@
 import axios from 'axios'
 
 /**
+ * 登入取token
+ * @param data
+ * @returns
+ */
+export const loginApi = (data: {
+	account: string
+	password: string
+}) => axios.post('/auth/users/login', data)
+
+/**
  * 取得使用者資訊
  * @returns 使用者資訊
  */

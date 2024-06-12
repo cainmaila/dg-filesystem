@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { goto } from '$app/navigation'
-	import { getUserMeApi } from '$lib/sdk/index.js'
+	import { getUserMeApi, loginApi } from '$lib/sdk/index.js'
 	import Cookies from 'js-cookie'
 	let accessToken = ''
 
 	export let data
 	const { INVENTEC_SERVICE_URL } = data
 
+	let account: string
+	let password: string
 	let userMe: any
 	let errorMesssage: string
 	let loading = false
@@ -45,6 +47,20 @@
 		userMe = null
 		errorMesssage = ''
 	}
+
+	async function onLoginSumit(event: Event) {
+		event.preventDefault()
+		errorMesssage = ''
+		try {
+			const { data } = await loginApi({ account, password })
+			const { accessToken: _accessToken } = data
+			Cookies.set('accessToken', _accessToken)
+			accessToken = _accessToken
+		} catch (error: any) {
+			console.log(error)
+			errorMesssage = error?.message || ''
+		}
+	}
 </script>
 
 <section>
@@ -52,6 +68,17 @@
 	<code>{INVENTEC_SERVICE_URL}</code>
 </section>
 <section>
+	<form on:submit={onLoginSumit}>
+		<div class="grid">
+			<label>
+				<input type="text" name="account" bind:value={account} placeholder="帳號" />
+			</label>
+			<label>
+				<input type="text" name="password" bind:value={password} placeholder="密碼" />
+			</label>
+			<button type="submit">登入</button>
+		</div>
+	</form>
 	<label>
 		<input type="text" bind:value={accessToken} placeholder="請餵養 accessToken" />
 	</label>
