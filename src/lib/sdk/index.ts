@@ -57,3 +57,10 @@ export const createFolder = (data: I_CreateFolderParams) => axios.post('/cms/blo
  * @returns
  */
 export const uploadFile = (data: FormData) => axios.post('/cms/blobs/file', data)
+
+/**
+ * 刪除檔案
+ * @param id
+ * @returns
+ */
+export const deleteBlob = (id: string) => axios.delete(`/cms/blobs/${id}`)
