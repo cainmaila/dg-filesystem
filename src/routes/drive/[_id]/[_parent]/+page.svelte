@@ -4,6 +4,10 @@
 	export let data
 	const { _id, parent } = data
 
+	//取的網址上query string的name
+	const urlParams = new URLSearchParams(location.search)
+	const name = urlParams.get('name')
+
 	let loading = false
 	let fileTyle = 1
 	let blobs: I_Blob[] = []
@@ -59,8 +63,9 @@
 		}
 	}
 
-	function gotoPage(parentId: string) {
-		location.href = `/drive/${_id}/${parentId}`
+	function gotoPage(parentId: string, name: string = '') {
+		// goto(`/drive/${_id}/${parentId}`)
+		location.href = `/drive/${_id}/${parentId}${name && '?name=' + name}`
 	}
 
 	function changeFileType(e: any) {
@@ -68,7 +73,7 @@
 	}
 </script>
 
-<h1 class="h1">Drive</h1>
+<h1 class="h1">{name || 'Drive'}</h1>
 <form on:submit={onCreateBlob} class="card grid gap-4 p-4">
 	<fieldset class="flex gap-4">
 		<label class="label" for="folder"
@@ -110,7 +115,7 @@
 				<a
 					href="#"
 					on:click={() => {
-						gotoPage(blob._id)
+						gotoPage(blob._id, blob.name)
 					}}>{blob.name}</a
 				>
 			{:else}
