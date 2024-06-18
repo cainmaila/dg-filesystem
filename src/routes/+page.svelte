@@ -47,4 +47,5 @@
 			<p>{error.message}</p>
 		</div>
 	</aside>
+	<button type="button" class="variant-filled btn" on:click={() => goto('/login')}>登入頁</button>
 {/await}
