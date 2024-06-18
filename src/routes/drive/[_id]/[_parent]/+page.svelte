@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { createFolder, getBlobs, uploadFile } from '$lib/sdk'
+	import { createFolder, deleteBlob, getBlobs, uploadFile } from '$lib/sdk'
+	import ContextMenu, { Item } from 'svelte-contextmenu'
 
 	export let data
 	const { _id, parent } = data
@@ -7,7 +8,7 @@
 	//取的網址上query string的name
 	const urlParams = new URLSearchParams(location.search)
 	const name = urlParams.get('name')
-
+	let myMenu: ContextMenu
 	let loading = false
 	let fileTyle = 1
 	let blobs: I_Blob[] = []
@@ -15,6 +16,7 @@
 		folders: I_Blob[]
 		files: I_Blob[]
 	}
+	let contextMenuTargetId: string
 	//分類 type 1: 資料夾 2: 檔案，變成兩個陣列
 	$: blobsViewData = classifyBlobs(blobs)
 
@@ -62,6 +64,7 @@
 
 		try {
 			await fetchBlobs()
+			fetchBlobs()
 		} catch (error: any) {
 			alert(error.message)
 		} finally {
@@ -83,6 +86,14 @@
 		const folders = blobs.filter((blob) => blob.type === 1)
 		const files = blobs.filter((blob) => blob.type === 2)
 		return { folders, files }
+	}
+
+	async function contextMenuDel() {
+		try {
+			await deleteBlob(contextMenuTargetId)
+		} catch (error: any) {
+			alert(error.message)
+		}
 	}
 </script>
 
@@ -132,8 +143,14 @@
 			>
 		</div>
 	{/each}
+	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	{#each blobsViewData.files as file (file._id)}
-		<div>
+		<div
+			on:contextmenu={(e) => {
+				contextMenuTargetId = file._id
+				myMenu.show(e)
+			}}
+		>
 			<span> 📄 </span>
 			{#if file?.thumbnail}
 				<img src={file.thumbnail} alt="" />
@@ -144,3 +161,6 @@
 {:catch error}
 	<div>{error.message}</div>
 {/await}
+<ContextMenu bind:this={myMenu}>
+	<Item on:click={contextMenuDel}>刪除</Item>
+</ContextMenu>

@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+	--ctx-menu-background: #4c4c4c88;
+	--ctx-menu-hover-bg: #4c4c4c44;
+}
+
 body {
 	@apply bg-surface-50-900-token;
 }
