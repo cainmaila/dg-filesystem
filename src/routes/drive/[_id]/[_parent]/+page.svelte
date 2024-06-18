@@ -11,6 +11,12 @@
 	let loading = false
 	let fileTyle = 1
 	let blobs: I_Blob[] = []
+	let blobsViewData: {
+		folders: I_Blob[]
+		files: I_Blob[]
+	}
+	//分類 type 1: 資料夾 2: 檔案，變成兩個陣列
+	$: blobsViewData = classifyBlobs(blobs)
 
 	async function fetchBlobs() {
 		loading = true
@@ -42,8 +48,8 @@
 				break
 			case 2:
 				const data = new FormData()
-				console.log(e.target.file)
 				data.append('file', e.target.file.files[0])
+				data.append('thumbnail', e.target.file.files[0])
 				data.append('name', name)
 				data.append('parent', parent)
 				try {
@@ -70,6 +76,13 @@
 
 	function changeFileType(e: any) {
 		fileTyle = (e.target as HTMLInputElement).id === 'folder' ? 1 : 2
+	}
+
+	//分類 type 1: 資料夾 2: 檔案，變成兩個陣列
+	function classifyBlobs(blobs: I_Blob[]) {
+		const folders = blobs.filter((blob) => blob.type === 1)
+		const files = blobs.filter((blob) => blob.type === 2)
+		return { folders, files }
 	}
 </script>
 
@@ -107,21 +120,25 @@
 {#await fetchBlobs()}
 	<div class="loader"></div>
 {:then}
-	{#each blobs || [] as blob}
+	{#each blobsViewData.folders as folder (folder._id)}
 		<div>
-			{#if blob.type === 1}
-				<span> 📁 </span>
-				<!-- svelte-ignore a11y-invalid-attribute -->
-				<a
-					href="#"
-					on:click={() => {
-						gotoPage(blob._id, blob.name)
-					}}>{blob.name}</a
-				>
-			{:else}
-				<span> 📄 </span>
-				<span>{blob.name}</span>
+			<span> 📁 </span>
+			<!-- svelte-ignore a11y-invalid-attribute -->
+			<a
+				href="#"
+				on:click={() => {
+					gotoPage(folder._id, folder.name)
+				}}>{folder.name}</a
+			>
+		</div>
+	{/each}
+	{#each blobsViewData.files as file (file._id)}
+		<div>
+			<span> 📄 </span>
+			{#if file?.thumbnail}
+				<img src={file.thumbnail} alt="" />
 			{/if}
+			<span>{file.name}</span>
 		</div>
 	{/each}
 {:catch error}

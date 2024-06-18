@@ -52,6 +52,7 @@ declare global {
 		_id: string
 		type: number
 		name: string
+		thumbnail?: string
 		drive: string
 		parent: string
 		size: number
@@ -64,4 +65,4 @@ declare global {
 	}
 }
 
-export {}
+export { }
